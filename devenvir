@@ -1,0 +1,163 @@
+#!/bin/sh
+clear
+
+# Unset variables that may no appear
+
+unset GCC_OPT
+
+# Verify your linux distribution 
+
+ver=0
+
+while [ $ver = 0 ]
+do
+	echo -n "Linux System is 64 bit or 32 bit (32/64): "
+	read linuxVersion
+
+	if [ $linuxVersion = 32 ]
+	then
+		ver=1
+	fi
+
+	if [ $linuxVersion = 64 ]
+	then
+		ver=1
+	fi
+done
+########### Set main variables
+
+# User Library
+
+if [ $linuxVersion -eq 32 ];
+then
+	LIB64=/usr/lib	
+elif [ $linuxVersion -eq 64 ];
+then
+	LIB64=/usr/lib64
+fi
+
+
+# Compile Settings
+
+GCC=gcc
+KERNELINC=-I/usr/include
+PTHREAD=$LIB64/libpthread.a
+LIBZ=$LIB64/libz.a
+
+
+# View settings
+
+clear
+echo " "
+echo " "
+echo " "
+echo "########### INSTALL SETTINGS ########### "
+
+echo " "
+echo "#### Systems Settings ####"
+echo " "
+echo "Linux $linuxVersion bit " 
+echo "User System Library = $LIB64 "
+echo " "
+echo "#### Compile Settings ####"
+echo " "
+echo "GCC = $GCC "
+echo "Kernel Path = $KERNELINC "
+echo "Pthread Library = $PTHREAD "
+echo "Libz Library = $LIBZ "
+echo " "
+
+
+
+echo -n "Do you need to fix some paths(y/N)? "
+read answer
+if [ "$answer" = "y" ];
+then
+
+	# User Library
+
+
+	echo "User Library = $LIB64 "
+	echo -n "Is User Library configuration correct (y/N)? "
+	read answer
+	if [ "$answer" = "N" ];
+	then
+		echo -n "Enter User Library Path: "
+		read LIB64
+		echo "New User Library = $LIB64 "
+	fi
+
+	# Compile Settings
+	echo " "
+	echo "#### Compile Settings ####"
+	echo " "
+
+
+	echo "GCC = $GCC "
+	echo -n "Is GCC configuration correct (y/N)? "
+	read answer
+	if [ "$answer" = "N" ];
+	then
+		echo -n "Enter User GCC: "
+		read GCC
+		echo "New GCC = $GCC "
+	fi
+
+
+	echo "Kernel Path = $KERNELINC "
+	echo -n "Is Kernel Path configuration correct (y/N)? "
+	read answer
+	if [ "$answer" = "N" ];
+	then
+		echo -n "Enter User Kernel Path: "
+		read KERNELINC
+		echo "New Kernel Path = $KERNELINC "
+	fi
+
+
+	echo "Pthread Library = $PTHREAD "
+	echo -n "Is Pthread Library configuration correct (y/N)? "
+	read answer
+	if [ "$answer" = "N" ];
+	then
+		echo -n "Enter Pthread Library: "
+		read PTHREAD
+		echo "New Pthread Library = $PTHREAD "
+	fi
+
+
+	echo "Libz Library = $LIBZ "
+	echo -n "Is Libz Library configuration correct (y/N)? "
+	read answer
+	if [ "$answer" = "N" ];
+	then
+		echo -n "Enter Libz Library Path: "
+		read LIBZ
+		echo "New Libz Library = $LIBZ "
+	fi
+
+fi
+
+clear
+echo " "
+echo " "
+echo " "
+echo -n "Are these settings correct (y/N)? "
+read answer
+if [ "$answer" = "y" ];
+then
+    export COMMON
+    export GCC
+    export KERNELINC
+    export GCC_OPT
+    export PTHREAD
+    export LIBZ
+    export LIB64
+    export linuxVersion
+    
+    export COMP="$GCC"
+    
+    echo "Environment setted"
+fi
+
+
